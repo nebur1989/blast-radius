@@ -1,3 +1,6 @@
+import os
+
+
 def go_to_latest_dir():
     all_subdirs = [d for d in os.listdir('.') if os.path.isdir(d)]
     latest_subdir = max(all_subdirs, key=os.path.getmtime)
