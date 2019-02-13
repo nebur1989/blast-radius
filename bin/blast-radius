@@ -15,6 +15,7 @@ from blastradius.handlers.dot import DotGraph, Format, DotNode
 from blastradius.handlers.plan import Plan
 from blastradius.handlers.apply import Apply
 from blastradius.handlers.terraform import Terraform
+from blastradius.handlers.terragrunt import go_to_terragrunt_cache
 from blastradius.server.server import app
 
 def main():
@@ -50,6 +51,10 @@ def main():
         sys.exit(0)
     
     elif args.json or args.dot or args.svg:
+        # Go to terragrunt cache
+        if os.path.exists('.terragrunt-cache'):
+            go_to_terragrunt_cache()
+
         if args.graph is sys.stdin:
             dot = DotGraph('', file_contents=sys.stdin.read())
         else:

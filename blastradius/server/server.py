@@ -13,14 +13,18 @@ import jinja2
 # 1st-party libraries
 from blastradius.handlers.dot import DotGraph, Format, DotNode
 from blastradius.handlers.terraform import Terraform
+from blastradius.handlers.terragrunt import go_to_terragrunt_cache
 from blastradius.util import which
 from blastradius.graph import Node, Edge, Counter, Graph
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def index():
     # we need terraform, graphviz, and an init-ed terraform project.
+    if os.path.exists('.terragrunt-cache'):
+        go_to_terragrunt_cache()
     if not which('terraform') and not which('terraform.exe'):
         return render_template('error.html')
     elif not which('dot') and not which('dot.exe'):
@@ -89,7 +93,5 @@ def get_terraform_version():
 def get_terraform_exe():
     return which('terraform')
 
-
-
-
-
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
